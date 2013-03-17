@@ -1,0 +1,8 @@
+.list-cell .airedEpisode{
+    -fx-background-color: #CCFF99;
+}
+
+.list-cell .futureEpisode{    
+    -fx-background-color: khaki;
+}
+
