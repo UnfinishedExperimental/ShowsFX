@@ -6,9 +6,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="629.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.scalajfx.JfxApplicationController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="932.99977792969" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.scalajfx.JfxApplicationController">
   <children>
     <ListView id="delegateList" fx:id="shows" layoutX="14.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
     <ListView id="delegateList" fx:id="episodes" layoutX="315.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
+    <ListView id="delegateList" fx:id="latest" layoutX="616.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
   </children>
 </AnchorPane>

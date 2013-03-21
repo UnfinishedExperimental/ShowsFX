@@ -1,7 +1,6 @@
 package org.example.scalajfx
 
 import java.net.URL
-import java.sql.Timestamp
 import java.util.ResourceBundle
 import javafx.scene.input.MouseEvent
 import javafx.scene.{control => jfxc}
@@ -12,7 +11,6 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.application.Platform
 import scalafx.beans.property._
-import scalafx.beans.value.ObservableValue
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.Scene
 import scalafx.scene.control.ListView
@@ -20,7 +18,6 @@ import scalafx.scene.control.SelectionMode
 import scalafx.scene.control.cell.TextFieldListCell
 import scalafx.util.StringConverter
 
-import rx.Observer
 import scala.slick.driver.HsqldbDriver.simple._
 import Database.threadLocalSession
 
@@ -62,15 +59,18 @@ class JfxApplicationController extends jfxf.Initializable {
     val selectedShow = shows.selectionModel.get.selectedItem
     val selectedEpisode = episodes.selectionModel.get.selectedItem
     
-    selectedShow onChange ((v, o, n) => {    
+    selectedShow onChange ((v, o, n) => {   
+        println(n.url)
         episodes.items = ObservableBuffer()
-        TVCountdownParser.getEpisodes(n).subscribe((e:Episode) => Platform.runLater {
+        TVCountdownParser.getEpisodes(n).subscribe((e:Episode) => 
+          Platform.runLater {
             val a = episodes.itemsProperty.get.add(e)
           })
       })   
     
     shows.items = ObservableBuffer()
-    TVCountdownParser.getShows subscribe((s:Show) => Platform.runLater {
+    TVCountdownParser.getShows subscribe((s:Show) => 
+      Platform.runLater {
         val a = shows.itemsProperty.get.add(s)
       })
   }    
@@ -92,7 +92,7 @@ class EpisodeCell extends jfxc.ListCell[Episode]
     super.updateItem(item, empty)
     
     if(!empty && item != null){
-      val epTitel = (e:Episode) => "S%02dE%02d %s" format(e.season, e.number, e.name)
+      val epTitel = (e:Episode) => "S%02dE%02d %s" format(e.season, e.number, e.name.getOrElse("---"))
     
       setText(epTitel(item))
       
