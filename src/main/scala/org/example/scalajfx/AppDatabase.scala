@@ -6,7 +6,31 @@
 package org.example.scalajfx
 
 import scala.slick.driver.HsqldbDriver.simple._
+import scala.slick.jdbc.meta.MTable
+import Database.threadLocalSession
+import scala.slick.lifted.DDL
 
 trait AppDatabase {
-  lazy val database = Database.forURL("jdbc:hsqldb:mem:testDB", user ="sa", password="", driver = "org.hsqldb.jdbcDriver")
+  def DB = database
+  lazy val database = Database.forURL("jdbc:hsqldb:file:testDB", user ="sa", password="", driver = "org.hsqldb.jdbcDriver")
+  
+  //initialize DB
+  
+  def isPresent[A](table:Table[A]) = {
+    !MTable.getTables(None, None, Option(table.tableName), None).list.isEmpty
+  }
+
+  def initializeDB() = {  
+    var tables:Seq[Table[_<:Any]] = Seq(Shows, Episodes)
+    
+    DB withTransaction {
+      var ddl = tables map(_.ddl) reduce((a,b) => a ++ b)
+                  
+      if(tables.exists(t => isPresent(t))){
+        if(tables.exists(t => !isPresent(t)))
+          throw new Exception("Just some needed tables already exist");
+      } else
+        ddl create
+    }
+  }
 }

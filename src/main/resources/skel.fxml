@@ -10,6 +10,6 @@
   <children>
     <ListView id="delegateList" fx:id="shows" layoutX="14.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
     <ListView id="delegateList" fx:id="episodes" layoutX="315.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
-    <ListView id="delegateList" fx:id="latest" layoutX="616.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
+    <ListView id="delegateList" fx:id="latest" layoutX="618.0" layoutY="14.0" onMouseClicked="#itemClicked" prefHeight="418.0" prefWidth="300.5" />
   </children>
 </AnchorPane>
