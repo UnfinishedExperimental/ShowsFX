@@ -29,32 +29,6 @@ case class Point[@specialized(Int, Float) T](x: T, y: T)(implicit num: Numeric[T
   @inline def lengthSq = x * x + y * y
 }
 
-case class vec2(x: Float, y: Float) {
-  def this(v: Float) = this(v, v)
-  def this(v: vec2) = this(v.x, v.y)  
-}
-case class vec3(x: Float, y: Float, z: Float) {
-  def this(v: Float) = this(v, v, v)
-
-  def this(v: Float, b: vec2) = this(v, b.x, b.y)
-  def this(b: vec2, v: Float) = this(b.x, b.y, v)
-  
-  def this(v: vec3) = this(v.x, v.y, v.z)  
-}
-case class vec4(x: Float, y: Float, z: Float, w: Float) {
-  def this(v: Float) = this(v, v, v, v)
-
-  def this(v: Float, b: vec3) = this(v, b.x, b.y, b.z)
-  def this(b: vec3, v: Float) = this(b.x, b.y, b.z, v)
-
-  def this(v: Float, b: Float, c: vec2) = this(v, b, c.x, c.y)
-  def this(v: Float, b: vec2, c: Float) = this(v, b.x, b.y, c)
-  def this(a: vec2, b: Float, v: Float) = this(a.x, a.y, b, v)
-
-  def this(a: vec2, b: vec2) = this(a.x, a.y, b.x, b.y)
-  def this(v: vec4) = this(v.x, v.y, v.z,v.w)  
-}
-
 object Point {
   implicit class IntPoint[T](p: Point[T])(implicit num: Integral[T]) {
     import num._
