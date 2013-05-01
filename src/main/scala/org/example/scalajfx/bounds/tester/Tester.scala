@@ -16,7 +16,7 @@ object Tester {
 
     def contains(a: AABB, b: AABB) = {
       val delta = b.center - a.center
-      (delta + b.halfSize) <= a.halfSize && (delta - b.halfSize) >= 0
+      (delta + b.halfSize) <= a.halfSize && delta >= b.halfSize
     }
 
     def overlap(a: AABB, b: AABB) =

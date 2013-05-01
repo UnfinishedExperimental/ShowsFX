@@ -141,7 +141,7 @@
                 </executions>
                 <configuration>
                     <vendor>${project.organization.name}</vendor>
-                    <mainClass>org.example.scalajfx.JfxApplication</mainClass>
+                    <mainClass>org.example.scalajfx.ditest.QuadTree</mainClass>
                     <permissions>
                         <permission>all-permissions</permission>
                     </permissions>

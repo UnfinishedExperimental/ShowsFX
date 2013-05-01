@@ -12,21 +12,47 @@ import scala.math.Fractional
 
 case class Point[@specialized(Int, Float) T](x: T, y: T)(implicit num: Numeric[T]) {
   import num._
-  def *(v: Point[T]) = Point(x * v.x, y * v.y)
-  def *(v: T) = Point(x * v, y * v)
-  def -(o: Point[T]) = Point(x - o.x, y - o.y)
-  def -(o: T) = Point(x - o, y - o)
-  def +(o: Point[T]) = Point(x + o.x, y + o.y)
-  def +(o: T) = Point(x + o, y + o)
-  def <=(o: Point[T]) = x <= o.x && y <= o.y
-  def >=(o: T) = x >= o && y >= o
-  def >=(o: Point[T]) = x >= o.x && y >= o.y
-  def >(o: Point[T]) = x > o.x && y > o.y
-  def max = x max y
-  def toInt = this(_.toInt)
+  @inline def *(v: Point[T]) = Point(x * v.x, y * v.y)
+  @inline def *(v: T) = Point(x * v, y * v)
+  @inline def -(o: Point[T]) = Point(x - o.x, y - o.y)
+  @inline def -(o: T) = Point(x - o, y - o)
+  @inline def +(o: Point[T]) = Point(x + o.x, y + o.y)
+  @inline def +(o: T) = Point(x + o, y + o)
+  @inline def <=(o: Point[T]) = x <= o.x && y <= o.y
+  @inline def >=(o: T) = x >= o && y >= o
+  @inline def >=(o: Point[T]) = x >= o.x && y >= o.y
+  @inline def >(o: Point[T]) = x > o.x && y > o.y
+  @inline def max = x max y
+  @inline def toInt = Point(x.toInt, y.toInt)
   def apply[E](conv: T => E)(implicit n: Numeric[E]) = Point[E](conv(x), conv(y))
-  def length = Math.sqrt(lengthSq.toDouble).toFloat
-  def lengthSq = x * x + y * y
+  @inline def length = Math.sqrt(lengthSq.toDouble).toFloat
+  @inline def lengthSq = x * x + y * y
+}
+
+case class vec2(x: Float, y: Float) {
+  def this(v: Float) = this(v, v)
+  def this(v: vec2) = this(v.x, v.y)  
+}
+case class vec3(x: Float, y: Float, z: Float) {
+  def this(v: Float) = this(v, v, v)
+
+  def this(v: Float, b: vec2) = this(v, b.x, b.y)
+  def this(b: vec2, v: Float) = this(b.x, b.y, v)
+  
+  def this(v: vec3) = this(v.x, v.y, v.z)  
+}
+case class vec4(x: Float, y: Float, z: Float, w: Float) {
+  def this(v: Float) = this(v, v, v, v)
+
+  def this(v: Float, b: vec3) = this(v, b.x, b.y, b.z)
+  def this(b: vec3, v: Float) = this(b.x, b.y, b.z, v)
+
+  def this(v: Float, b: Float, c: vec2) = this(v, b, c.x, c.y)
+  def this(v: Float, b: vec2, c: Float) = this(v, b.x, b.y, c)
+  def this(a: vec2, b: Float, v: Float) = this(a.x, a.y, b, v)
+
+  def this(a: vec2, b: vec2) = this(a.x, a.y, b.x, b.y)
+  def this(v: vec4) = this(v.x, v.y, v.z,v.w)  
 }
 
 object Point {
@@ -94,9 +120,9 @@ trait Entity {
 }
 
 object QuadTree {
-  
+
   def main(args: Array[String]) = TestMain.main(args)
-  
+
   def nodeCount(maxDepth: Int) = ((1 << (maxDepth + 1) * 2) - 1) / 3
   def maxDepth(nodeCount: Int) = log2((3 * nodeCount + 1) / 4) / 2
   def log2(a: Int) = (Integer.SIZE - 1) - Integer.numberOfLeadingZeros(a)
@@ -164,6 +190,8 @@ object TestMain {
 
     case class En(bound: Bounds) extends Entity
 
+    Thread.sleep(30000)
+
     for (i <- 0 to 5) {
       val ents = Array.tabulate(10000) { i =>
         val p = Point(Random.nextFloat * qt.radius * 2, Random.nextFloat * qt.radius * 2)
@@ -182,23 +210,23 @@ object TestMain {
       println(System.currentTimeMillis - time)
     }
 
-    //    val qs = Array.tabulate(500) { i =>
-    //      val p = Point(Random.nextFloat * (qt.radius - 3) * 2 + 3, Random.nextFloat * (qt.radius - 3) * 2 + 3)
-    //      val s = Point(Random.nextFloat * 5, Random.nextFloat * 3)
-    //      AABB(p, s)
-    //    }
-    //    
-    //    val qs2 = Array.tabulate(500) { i =>
-    //      val p = Point(Random.nextFloat * (qt.radius - 3) * 2 + 3, Random.nextFloat * (qt.radius - 3) * 2 + 3)
-    //      val r = Random.nextFloat * 5
-    //      CircleBound(p, r)
-    //    }
-    //
-    //    for (i <- 0 to 5) {
-    //      val time = System.currentTimeMillis
-    //      qs.foreach(qt.query(_))
-    //      qs2.foreach(qt.query(_))
-    //      println(System.currentTimeMillis - time)
-    //    }
+    val qs = Array.tabulate(500) { i =>
+      val p = Point(Random.nextFloat * (qt.radius - 3) * 2 + 3, Random.nextFloat * (qt.radius - 3) * 2 + 3)
+      val s = Point(Random.nextFloat * 5, Random.nextFloat * 3)
+      AABB(p, s)
+    }
+
+    val qs2 = Array.tabulate(500) { i =>
+      val p = Point(Random.nextFloat * (qt.radius - 3) * 2 + 3, Random.nextFloat * (qt.radius - 3) * 2 + 3)
+      val r = Random.nextFloat * 5
+      CircleBound(p, r)
+    }
+
+    for (i <- 0 to 5) {
+      val time = System.currentTimeMillis
+      qs.foreach(qt.query(_))
+      qs2.foreach(qt.query(_))
+      println(System.currentTimeMillis - time)
+    }
   }
 }
