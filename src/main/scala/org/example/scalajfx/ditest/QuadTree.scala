@@ -164,8 +164,6 @@ object TestMain {
 
     case class En(bound: Bounds) extends Entity
 
-    Thread.sleep(30000)
-
     for (i <- 0 to 5) {
       val ents = Array.tabulate(10000) { i =>
         val p = Point(Random.nextFloat * qt.radius * 2, Random.nextFloat * qt.radius * 2)
