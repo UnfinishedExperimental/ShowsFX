@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>ShowsFX</name>
     <description>A simple Scala JavaFX application</description>
-    <inceptionYear>2012</inceptionYear>
+    <inceptionYear>2013</inceptionYear>
     <packaging>jar</packaging>
 
     <organization>
@@ -55,6 +55,11 @@
             <artifactId>htmlparser</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+        	<groupId>com.chuusai</groupId>
+        	<artifactId>shapeless_2.10</artifactId>
+        	<version>1.2.4</version>
+        </dependency>
     </dependencies>
     
     <build>
@@ -62,6 +67,19 @@
         <testSourceDirectory>src/test/scala</testSourceDirectory>
 
         <plugins>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

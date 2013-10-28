@@ -27,6 +27,7 @@ import Database.threadLocalSession
 object JfxApplication extends JFXApp with AppDatabase {     
   
   initializeDB()
+  val loader = new jfxf.FXMLLoader;
   
   val root: jfxs.Parent = jfxf.FXMLLoader.load(getClass.getResource("/skel.fxml"))
   stage = new PrimaryStage() {
